@@ -1,1 +1,360 @@
-<h1>StatSplit</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StatSplit — Turn Raw Splits Into Winning Lineups</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #0d1323;
+      color: #f8fafc;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    .nav-wrap {
+      border-bottom: 1px solid #1e293b;
+      background: rgba(13, 19, 35, 0.9);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    nav {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.45rem;
+      font-weight: 900;
+      letter-spacing: -0.025em;
+    }
+    .brand span { color: #4f67eb; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+    .nav-links a:hover { color: #ffffff; }
+
+    .hero {
+      max-width: 860px;
+      margin: 4.5rem auto 3.5rem;
+      padding: 0 1.5rem;
+      text-align: center;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #0eb17b;
+      background: rgba(14, 177, 123, 0.12);
+      border: 1px solid rgba(14, 177, 123, 0.3);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.25rem, 5vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 .accent { color: #4f67eb; }
+    .hero p {
+      font-size: 1.15rem;
+      color: #94a3b8;
+      max-width: 660px;
+      margin: 0 auto 2rem;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.85rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.8rem 1.4rem;
+      border-radius: 0.65rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: transform 0.15s ease, background-color 0.15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-blue { background: #4f67eb; color: #ffffff; }
+    .btn-blue:hover { background: #5e75f2; }
+    .btn-green { background: #0eb17b; color: #ffffff; }
+    .btn-green:hover { background: #10c488; }
+
+    .pillars {
+      max-width: 1080px;
+      margin: 0 auto 4.5rem;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+    .pillar-card {
+      background: #131c31;
+      border: 1px solid #1e293b;
+      border-radius: 0.9rem;
+      padding: 1.5rem;
+    }
+    .pillar-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 0.65rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .icon-blue { background: rgba(79, 103, 235, 0.15); color: #4f67eb; }
+    .icon-green { background: rgba(14, 177, 123, 0.15); color: #0eb17b; }
+    .pillar-card h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .pillar-card p { font-size: 0.9rem; color: #94a3b8; }
+
+    .section-wrap {
+      max-width: 1080px;
+      margin: 0 auto 5rem;
+      padding: 0 1.5rem;
+    }
+    .section-header {
+      margin-bottom: 1.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .section-header h2 { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; }
+    .section-header p { color: #94a3b8; font-size: 0.95rem; }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .platform-card {
+      background: #162038;
+      border: 1px solid #263452;
+      border-radius: 1.1rem;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .platform-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.1rem;
+    }
+    .status {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.65rem;
+      border-radius: 0.4rem;
+    }
+    .status-live { background: rgba(14, 177, 123, 0.16); color: #34d399; border: 1px solid rgba(14, 177, 123, 0.35); }
+    .status-beta { background: rgba(79, 103, 235, 0.16); color: #818cf8; border: 1px solid rgba(79, 103, 235, 0.35); }
+    .platform-card h3 { font-size: 1.5rem; font-weight: 900; margin-bottom: 0.6rem; }
+    .platform-card p { color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1.25rem; }
+    .feature-list {
+      list-style: none;
+      margin-bottom: 1.75rem;
+      display: grid;
+      gap: 0.5rem;
+      font-size: 0.88rem;
+      color: #94a3b8;
+    }
+    .feature-list li::before {
+      content: "✓";
+      color: #0eb17b;
+      font-weight: 900;
+      margin-right: 0.55rem;
+    }
+    .card-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    footer {
+      border-top: 1px solid #1e293b;
+      text-align: center;
+      padding: 2.25rem 1.5rem;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .hero { margin-top: 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="nav-wrap">
+    <nav>
+      <a href="/" class="brand">
+        <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://w3.org">
+          <defs>
+            <clipPath id="boxClip"><rect x="4" y="4" width="92" height="92" rx="22"/></clipPath>
+            <clipPath id="topLeft"><polygon points="0,0 100,0 0,100"/></clipPath>
+            <clipPath id="botRight"><polygon points="100,0 100,100 0,100"/></clipPath>
+          </defs>
+          <g clip-path="url(#boxClip)">
+            <rect x="0" y="0" width="100" height="100" fill="#4f67eb" clip-path="url(#topLeft)"/>
+            <rect x="0" y="0" width="100" height="100" fill="#0eb17b" clip-path="url(#botRight)"/>
+            <rect x="26" y="22" width="48" height="62" rx="7" stroke="#ffffff" stroke-width="5.5" fill="none"/>
+            <rect x="38" y="15" width="24" height="12" rx="4" fill="#ffffff"/>
+            <circle cx="50" cy="15" r="5" fill="#ffffff"/>
+            <circle cx="50" cy="15" r="2" fill="#4f67eb"/>
+            <g clip-path="url(#topLeft)">
+              <rect x="35" y="36" width="4.5" height="4.5" rx="1" fill="#ffffff"/>
+              <line x1="44" y1="38.2" x2="64" y2="38.2" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+              <rect x="35" y="47" width="4.5" height="4.5" rx="1" fill="#ffffff"/>
+              <line x1="44" y1="49.2" x2="64" y2="49.2" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+              <rect x="35" y="58" width="4.5" height="4.5" rx="1" fill="#ffffff"/>
+              <line x1="44" y1="60.2" x2="56" y2="60.2" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+            </g>
+            <g clip-path="url(#botRight)">
+              <polyline points="37,69 47,59 56,64 65,51" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="37" cy="69" r="3.5" fill="#0eb17b" stroke="#ffffff" stroke-width="3"/>
+              <circle cx="47" cy="59" r="3.5" fill="#0eb17b" stroke="#ffffff" stroke-width="3"/>
+              <circle cx="56" cy="64" r="3.5" fill="#0eb17b" stroke="#ffffff" stroke-width="3"/>
+              <circle cx="65" cy="51" r="3.5" fill="#0eb17b" stroke="#ffffff" stroke-width="3"/>
+            </g>
+            <line x1="8" y1="92" x2="92" y2="8" stroke="#ffffff" stroke-width="5.5" stroke-linecap="round"/>
+          </g>
+        </svg>
+        <div>Stat<span>Split</span></div>
+      </a>
+      <div class="nav-links">
+        <a href="#platforms">Platforms</a>
+        <a href="/mk8-eSports-Tracker">eSports</a>
+        <a href="/track">Track &amp; Field</a>
+      </div>
+    </nav>
+  </div>
+
+  <section class="hero">
+    <div class="eyebrow">Built for School Coaches &amp; Student-Athletes</div>
+    <h1>Turn raw splits into <span class="accent">winning lineups.</span></h1>
+    <p>StatSplit replaces messy spreadsheets with fast sideline and lobby data logging—automatically generating PRs, map rankings, and printable match-day lineup cards.</p>
+    <div class="hero-actions">
+      <a href="/mk8-eSports-Tracker" class="btn btn-blue">Open eSports Tracker</a>
+      <a href="/track" class="btn btn-green">Open Track &amp; Field</a>
+    </div>
+  </section>
+  <section class="pillars">
+    <div class="pillar-card">
+      <div class="pillar-icon icon-blue">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5"/><path d="M9 2h6"/><path d="M12 2v3"/><path d="M18 6l1.5-1.5"/>
+        </svg>
+      </div>
+      <h3>Fast Sideline &amp; Lobby Capture</h3>
+      <p>Students and event coaches log race placements, live split times, and field attempts in seconds from any Chromebook or phone.</p>
+    </div>
+
+    <div class="pillar-card">
+      <div class="pillar-icon icon-green">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 17 9 11 14 14 21 7"/><circle cx="3" cy="17" r="1.5" fill="currentColor"/><circle cx="9" cy="11" r="1.5" fill="currentColor"/><circle cx="14" cy="14" r="1.5" fill="currentColor"/><circle cx="21" cy="7" r="1.5" fill="currentColor"/>
+        </svg>
+      </div>
+      <h3>PRs, Averages &amp; Venue Splits</h3>
+      <p>Automatically separates official matches from practice, flags small sample sizes, and surfaces true performance trends.</p>
+    </div>
+
+    <div class="pillar-card">
+      <div class="pillar-icon icon-blue">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 2h6v4H9z"/><line x1="9" y1="11" x2="15" y2="11"/><line x1="9" y1="15" x2="15" y2="15"/>
+        </svg>
+      </div>
+      <h3>Printable Match &amp; Meet Cards</h3>
+      <p>Build custom Game 1/2/3 lineups or relay orders with live projections, then print or export crisp PNG scouting sheets.</p>
+    </div>
+  </section>
+
+  <section id="platforms" class="section-wrap">
+    <div class="section-header">
+      <div>
+        <h2>StatSplit Platforms</h2>
+        <p>Select a sport module to launch live logging or open your coach dashboard.</p>
+      </div>
+    </div>
+
+    <div class="platform-grid">
+      <div class="platform-card">
+        <div>
+          <div class="platform-top">
+            <span class="status status-live">Live Beta</span>
+            <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 700;">PlayVS &amp; Scholastic</span>
+          </div>
+          <h3>StatSplit: eSports</h3>
+          <p>Built for scholastic Mario Kart 8 Deluxe programs, with multi-title expansion on the roadmap.</p>
+          <ul class="feature-list">
+            <li>Student race logger with 6-race session receipts</li>
+            <li>Official Match vs. Practice stat filtering</li>
+            <li>Interactive Best-of-3 Match Playbook &amp; track picks</li>
+            <li>One-click printable player &amp; squad scouting cards</li>
+          </ul>
+        </div>
+        <div class="card-actions">
+          <a href="/mk8-eSports-Tracker" class="btn btn-blue">Launch Mario Kart 8 Tracker</a>
+        </div>
+      </div>
+
+      <div class="platform-card">
+        <div>
+          <div class="platform-top">
+            <span class="status status-beta">Prototype Ready</span>
+            <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 700;">Running, Throws &amp; Jumps</span>
+          </div>
+          <h3>StatSplit: Track &amp; Field</h3>
+          <p>Streamline practice splits, field event attempts, and meet-day relay cards for head and event coaches.</p>
+          <ul class="feature-list">
+            <li>Live multi-lane heat timer with tap-to-split buttons</li>
+            <li>Throws &amp; jumps attempt tracker with scratch-rate stats</li>
+            <li>Official meet result logging &amp; venue PR breakdowns</li>
+            <li>Printable relay lineup cards &amp; athlete PR sheets</li>
+          </ul>
+        </div>
+        <div class="card-actions">
+          <a href="/track" class="btn btn-green">Launch Track &amp; Field</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2026 StatSplit. Built for coaches and student-athletes.
+  </footer>
+
+</body>
+</html>
